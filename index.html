@@ -3,275 +3,352 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LUNAVERA — Modern Fashion Store</title>
-  <meta name="description" content="LUNAVERA modern fashion store">
+  <title>LUNAVERA — Social Marketplace</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:Arial,Helvetica,sans-serif;background:#faf8f6;color:#292522;line-height:1.5}
-    button,input,select,textarea{font:inherit}button{cursor:pointer}
-    .header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.96);border-bottom:1px solid #eee;backdrop-filter:blur(10px)}
-    .nav{max-width:1200px;margin:auto;min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:18px}
-    .logo{font-size:24px;font-weight:800;letter-spacing:4px}
-    .menu{display:flex;gap:22px;list-style:none}.menu button{border:0;background:none;font-weight:600;color:#4d4742}
-    .nav-right{display:flex;gap:8px;align-items:center}
-    .cart-btn,.dark-btn{border:0;background:#292522;color:#fff;padding:11px 17px;border-radius:25px;font-weight:700}
-    .mobile-btn{display:none;border:1px solid #ddd;background:#fff;padding:8px 11px;border-radius:8px}
-    .mobile-menu{display:none;padding:12px 20px;border-top:1px solid #eee;background:#fff}.mobile-menu.show{display:grid;gap:8px}
-    .mobile-menu button{border:0;background:none;text-align:left;padding:8px;font-weight:600}
-    .hero{min-height:500px;display:flex;align-items:center;background:linear-gradient(135deg,#201a17,#6b5649)}
-    .hero-inner{max-width:1200px;width:100%;margin:auto;padding:70px 25px;color:#fff}
-    .hero h1{font-size:clamp(42px,7vw,76px);letter-spacing:6px}.hero p{max-width:560px;color:#e6ded9;font-size:18px;margin:15px 0 25px}
-    .light-btn{border:0;background:#fff;color:#292522;padding:13px 24px;border-radius:28px;font-weight:700}
-    .section{max-width:1200px;margin:auto;padding:65px 20px}.title{text-align:center;margin-bottom:32px}.title h2{font-size:32px}.title p{color:#777}
-    .categories{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-bottom:25px}.category{border:1px solid #ddd;background:#fff;padding:9px 17px;border-radius:24px}.category.active{background:#292522;color:#fff}
-    .tools{display:flex;gap:10px;margin-bottom:25px}.search,.sort{border:1px solid #ddd;background:#fff;border-radius:10px;padding:12px 14px}.search{flex:1}
-    .products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.card{background:#fff;border:1px solid #eee;border-radius:15px;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px #00000012}
-    .product-img{width:100%;aspect-ratio:3/4;object-fit:cover;background:#eee}.card-body{padding:15px}.cat{font-size:11px;color:#a67c52;font-weight:700;text-transform:uppercase}.card h3{font-size:17px;margin:5px 0}.price{font-weight:700;margin:7px 0}.stock{font-size:12px;color:#777;margin-bottom:12px}.actions{display:flex;gap:7px}.actions button{flex:1;border:0;padding:10px;border-radius:8px;font-weight:700}.detail{background:#eee}.add{background:#292522;color:#fff}
-    .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.review{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px}.stars{color:#d49b00;letter-spacing:2px}.review-media{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px}.review-media img,.review-media video{width:100%;max-height:190px;object-fit:cover;border-radius:8px}
-    .review-form{background:#fff;border:1px solid #eee;border-radius:15px;padding:24px;max-width:760px;margin:0 auto 30px}.form{display:grid;gap:13px}.form label{font-weight:700;font-size:14px}.form input,.form textarea,.form select{width:100%;border:1px solid #ddd;border-radius:9px;padding:11px 13px;background:#fff}.form textarea{min-height:100px;resize:vertical}.rating{display:flex;gap:4px;flex-direction:row-reverse;justify-content:flex-end}.rating input{display:none}.rating label{font-size:30px;color:#ccc;cursor:pointer}.rating label:hover,.rating label:hover~label,.rating input:checked~label{color:#e0a800}
-    .upload{border:1px dashed #c9c1ba;border-radius:10px;padding:14px;background:#faf8f6}.upload small{display:block;color:#777;margin-top:5px}
-    .footer{background:#292522;color:#fff;text-align:center;padding:45px 20px}.footer p{color:#ccc;font-size:14px;margin-top:6px}
-    .modal{display:none;position:fixed;inset:0;z-index:2000;background:#0009;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.box{width:min(900px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:17px;padding:25px;position:relative}.close{position:absolute;right:15px;top:13px;border:0;background:#eee;border-radius:50%;width:34px;height:34px;font-size:20px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}.detail-grid img{width:100%;border-radius:12px;aspect-ratio:3/4;object-fit:cover}.sizes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.size{border:1px solid #ccc;background:#fff;padding:8px 13px;border-radius:8px}.size.selected{background:#292522;color:#fff}.cart-item{display:flex;gap:13px;align-items:center;border-bottom:1px solid #eee;padding:13px 0}.cart-item img{width:65px;height:78px;object-fit:cover;border-radius:7px}.cart-info{flex:1}.qty{display:flex;gap:9px;align-items:center;margin-top:5px}.qty button{border:1px solid #ddd;background:#fff;width:27px;height:27px;border-radius:6px}.remove{border:0;background:#fee;color:#a33;padding:7px 10px;border-radius:7px}
-    .total{display:flex;justify-content:space-between;border-top:2px solid #222;padding-top:15px;margin-top:10px;font-weight:700;font-size:19px}.toast{position:fixed;right:18px;bottom:18px;background:#292522;color:#fff;padding:13px 17px;border-radius:10px;z-index:5000;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:translateY(0)}
-    .empty{text-align:center;padding:35px;color:#777;background:#fff;border:1px solid #eee;border-radius:14px;grid-column:1/-1}
-    .online-note{font-size:13px;color:#777;text-align:center;margin-top:10px}
-    @media(max-width:900px){.products{grid-template-columns:repeat(2,1fr)}.reviews-grid{grid-template-columns:1fr 1fr}.menu{display:none}.mobile-btn{display:block}}
-    @media(max-width:600px){.nav{min-height:62px}.logo{font-size:19px}.products{gap:11px}.card-body{padding:11px}.actions{flex-direction:column}.reviews-grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}.section{padding:45px 15px}.tools{flex-direction:column}}
+    body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;color:#333;line-height:1.5}
+    button,input,select,textarea{font:inherit} button{cursor:pointer}
+    .header{position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid #e0e0e0;padding:12px 20px}
+    .nav{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}
+    .logo{font-size:22px;font-weight:800;color:#ee4d2d;letter-spacing:2px;cursor:pointer}
+    .nav-right{display:flex;gap:10px;align-items:center}
+    .btn{border:0;padding:9px 16px;border-radius:6px;font-weight:600;font-size:14px}
+    .btn-primary{background:#ee4d2d;color:#fff}
+    .btn-outline{border:1px solid #ee4d2d;color:#ee4d2d;background:#fff}
+    .btn-dark{background:#222;color:#fff}
+    .hero{background:linear-gradient(135deg,#ee4d2d,#ff7337);color:#fff;padding:40px 20px;text-align:center}
+    .hero h1{font-size:32px;margin-bottom:8px}
+    .container{max-width:1200px;margin:20px auto;padding:0 15px}
+    .section-title{font-size:20px;font-weight:700;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
+    .card{background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden;display:flex;flex-direction:column}
+    .card img{width:100%;aspect-ratio:1;object-fit:cover;background:#eee}
+    .card-body{padding:12px;display:flex;flex-direction:column;flex:1}
+    .card-body h3{font-size:15px;margin:5px 0;font-weight:600}
+    .price{color:#ee4d2d;font-size:16px;font-weight:700;margin-bottom:8px}
+    .seller-tag{font-size:11px;color:#777;background:#f0f0f0;padding:3px 6px;border-radius:4px;width:max-content}
+    .actions{margin-top:auto;display:flex;gap:6px;padding-top:10px}
+    .actions button{flex:1;padding:7px;font-size:12px;border-radius:4px;border:0}
+    .tabs{display:flex;gap:10px;border-bottom:2px solid #ddd;margin-bottom:20px}
+    .tab{padding:10px 15px;font-weight:600;color:#666;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+    .tab.active{color:#ee4d2d;border-color:#ee4d2d}
+    .modal{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:15px}
+    .modal.show{display:flex}
+    .box{width:min(600px,100%);max-height:90vh;overflow-y:auto;background:#fff;border-radius:10px;padding:20px;position:relative}
+    .close{position:absolute;right:15px;top:15px;border:0;background:none;font-size:22px;cursor:pointer}
+    .form-group{margin-bottom:12px}
+    .form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px}
+    .review-item{border-bottom:1px solid #eee;padding:10px 0}
+    .review-item b{font-size:13px}
+    .stars{color:#f5a623;font-size:12px}
+    .user-card{background:#fff;padding:12px;border-radius:8px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   </style>
 </head>
 <body>
 
 <header class="header">
-  <nav class="nav">
-    <div class="logo" onclick="scrollToId('home')">LUNAVERA</div>
-    <ul class="menu">
-      <li><button onclick="scrollToId('home')">Home</button></li>
-      <li><button onclick="scrollToId('products')">Shop</button></li>
-      <li><button onclick="scrollToId('reviews')">Reviews</button></li>
-      <li><button onclick="scrollToId('contact')">Contact</button></li>
-    </ul>
+  <div class="nav">
+    <div class="logo" onclick="switchTab('shop')">🛍️ LUNAVERA</div>
     <div class="nav-right">
-      <button class="cart-btn" onclick="openCart()">🛒 Keranjang (<span id="cartCount">0</span>)</button>
-      <button class="mobile-btn" onclick="document.getElementById('mobileMenu').classList.toggle('show')">☰</button>
+      <span id="userStatus" style="font-size:13px;font-weight:600"></span>
+      <button class="btn btn-outline" id="authBtn" onclick="openModal('authModal')">Masuk / Daftar</button>
+      <button class="btn btn-primary" onclick="openCart()">🛒 (<span id="cartCount">0</span>)</button>
     </div>
-  </nav>
-  <div class="mobile-menu" id="mobileMenu">
-    <button onclick="scrollToId('home')">Home</button>
-    <button onclick="scrollToId('products')">Shop</button>
-    <button onclick="scrollToId('reviews')">Reviews</button>
-    <button onclick="scrollToId('contact')">Contact</button>
   </div>
 </header>
 
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <h1>LUNAVERA</h1>
-    <p>Modern fashion untuk gaya sehari-hari. Pilih koleksi favoritmu, masukkan ke keranjang, lalu pesan dengan mudah.</p>
-    <button class="light-btn" onclick="scrollToId('products')">BELANJA SEKARANG</button>
-  </div>
-</section>
+<div class="hero">
+  <h1>Pasar Fashion Komunitas</h1>
+  <p>Jual barangmu, temukan gaya baru, dan berteman dengan sesama pecinta fashion!</p>
+</div>
 
-<section class="section" id="products">
-  <div class="title"><h2>Our Collection</h2><p>Temukan fashion favoritmu di LUNAVERA.</p></div>
-  <div class="categories">
-    <button class="category active" onclick="setCategory('Semua',this)">Semua</button>
-    <button class="category" onclick="setCategory('Dress',this)">Dress</button>
-    <button class="category" onclick="setCategory('Top',this)">Top</button>
-    <button class="category" onclick="setCategory('Outer',this)">Outer</button>
-    <button class="category" onclick="setCategory('Bottom',this)">Bottom</button>
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('shop')">🛍️ Jelajah Produk</div>
+    <div class="tab" onclick="switchTab('friends')">👥 Teman & Komunitas</div>
   </div>
-  <div class="tools">
-    <input class="search" id="search" placeholder="🔎 Cari produk..." oninput="renderProducts()">
-    <select class="sort" id="sort" onchange="renderProducts()">
-      <option value="default">Urutkan</option><option value="low">Harga Terendah</option><option value="high">Harga Tertinggi</option><option value="name">Nama A-Z</option>
-    </select>
-  </div>
-  <div class="products" id="productsGrid"></div>
-</section>
 
-<section class="section" id="reviews">
-  <div class="title"><h2>Customer Reviews</h2><p>Ulasan tersimpan online sehingga dapat dilihat pengguna lain.</p></div>
-  <div class="review-form">
-    <h3>⭐ Tulis Review</h3>
-    <p style="color:#777;font-size:14px;margin:5px 0 18px">Bagikan pengalamanmu. Kamu juga dapat melampirkan foto atau video.</p>
-    <form class="form" onsubmit="submitReview(event)">
-      <div><label>Nama</label><input id="reviewName" required maxlength="50" placeholder="Nama kamu"></div>
-      <div><label>Rating</label><div class="rating">
-        <input type="radio" id="r5" name="rating" value="5" required><label for="r5">★</label>
-        <input type="radio" id="r4" name="rating" value="4"><label for="r4">★</label>
-        <input type="radio" id="r3" name="rating" value="3"><label for="r3">★</label>
-        <input type="radio" id="r2" name="rating" value="2"><label for="r2">★</label>
-        <input type="radio" id="r1" name="rating" value="1"><label for="r1">★</label>
-      </div></div>
-      <div><label>Komentar</label><textarea id="reviewComment" required maxlength="500" placeholder="Bagaimana pengalaman kamu?"></textarea></div>
-      <div class="upload"><label>📷 Foto / 🎥 Video (opsional)</label><input id="reviewFiles" type="file" accept="image/*,video/*" multiple><small>Maksimal 3 file. Gunakan file yang memang kamu miliki.</small></div>
-      <button class="dark-btn" type="submit" id="reviewSubmit">KIRIM REVIEW</button>
+  <!-- TAB PASAR -->
+  <div id="tabShop">
+    <div class="section-title">
+      <span>Semua Produk Komunitas</span>
+      <button class="btn btn-primary" onclick="checkAuthAndRun(() => openModal('addProductModal'))">+ Jual Produk</button>
+    </div>
+    <div class="grid" id="productsGrid"></div>
+  </div>
+
+  <!-- TAB TEMAN -->
+  <div id="tabFriends" style="display:none">
+    <div class="section-title">Cari Teman Baru</div>
+    <div id="usersList"></div>
+  </div>
+</div>
+
+<!-- MODAL AUTH -->
+<div class="modal" id="authModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('authModal')">×</button>
+    <h2 style="margin-bottom:15px">Masuk Akun</h2>
+    <form onsubmit="handleAuth(event)" class="form-group">
+      <div class="form-group"><label>Email</label><input type="email" id="authEmail" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="authPassword" required></div>
+      <div class="form-group"><label>Username (Pengguna Baru)</label><input id="authUsername" placeholder="Contoh: siska_fashion"></div>
+      <button class="btn btn-primary" style="width:100%">Masuk / Daftar Akun</button>
     </form>
   </div>
-  <div class="reviews-grid" id="reviewsList"></div>
-</section>
+</div>
 
-<section class="section" id="contact">
-  <div class="title"><h2>Contact LUNAVERA</h2><p>Hubungi kami untuk pertanyaan mengenai produk dan pesanan.</p></div>
-  <div style="text-align:center"><button class="dark-btn" onclick="openWhatsApp()">📱 CHAT WHATSAPP</button></div>
-</section>
+<!-- MODAL TAMBAH PRODUK -->
+<div class="modal" id="addProductModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('addProductModal')">×</button>
+    <h2 style="margin-bottom:15px">Jual Produk Kamu</h2>
+    <form onsubmit="saveProduct(event)">
+      <div class="form-group"><label>Nama Produk</label><input id="pName" required></div>
+      <div class="form-group"><label>Kategori</label>
+        <select id="pCategory"><option>Dress</option><option>Top</option><option>Outer</option><option>Bottom</option></select>
+      </div>
+      <div class="form-group"><label>Harga (Rp)</label><input type="number" id="pPrice" required></div>
+      <div class="form-group"><label>Stok</label><input type="number" id="pStock" value="1" required></div>
+      <div class="form-group"><label>URL Gambar (Link Foto)</label><input id="pImage" placeholder="https://..." required></div>
+      <div class="form-group"><label>Deskripsi</label><textarea id="pDesc" required></textarea></div>
+      <button class="btn btn-primary" style="width:100%">Post & Jual</button>
+    </form>
+  </div>
+</div>
 
-<footer class="footer"><h2 style="letter-spacing:4px">LUNAVERA</h2><p>Modern Fashion • Timeless Style</p><p>© 2026 LUNAVERA. All Rights Reserved.</p></footer>
+<!-- MODAL DETAIL & ULASAN PUBLIK -->
+<div class="modal" id="detailModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('detailModal')">×</button>
+    <div id="detailContent"></div>
+    <hr style="margin:15px 0">
+    <h3>⭐ Ulasan & Komentar Publik</h3>
+    <div id="reviewsList" style="margin:10px 0"></div>
+    <form onsubmit="submitReview(event)" style="margin-top:10px">
+      <div class="form-group"><label>Rating</label>
+        <select id="rRating"><option value="5">⭐⭐⭐⭐⭐ (5)</option><option value="4">⭐⭐⭐⭐ (4)</option><option value="3">⭐⭐⭐ (3)</option></select>
+      </div>
+      <div class="form-group"><label>Komentar Kamu</label><textarea id="rComment" required placeholder="Tulis komentar publik..."></textarea></div>
+      <button class="btn btn-outline" style="width:100%">Kirim Ulasan</button>
+    </form>
+  </div>
+</div>
 
-<div class="modal" id="productModal"><div class="box"><button class="close" onclick="closeModal('productModal')">×</button><div id="productDetail"></div></div></div>
-<div class="modal" id="cartModal"><div class="box"><button class="close" onclick="closeModal('cartModal')">×</button><h2>🛒 Keranjang</h2><div id="cartItems"></div><div class="total"><span>Total</span><span id="cartTotal">Rp0</span></div><button class="dark-btn" style="width:100%;margin-top:18px" onclick="openCheckout()">LANJUT CHECKOUT</button></div></div>
-<div class="modal" id="checkoutModal"><div class="box"><button class="close" onclick="closeModal('checkoutModal')">×</button><h2>Checkout</h2><p style="color:#777;font-size:14px;margin:5px 0 15px">Pesanan akan dibuat melalui WhatsApp.</p><form class="form" onsubmit="sendOrder(event)">
-  <div><label>Nama Lengkap</label><input id="customerName" required></div>
-  <div><label>Nomor WhatsApp</label><input id="customerPhone" required type="tel"></div>
-  <div><label>Alamat Pengiriman</label><textarea id="customerAddress" required></textarea></div>
-  <div><label>Metode Pembayaran</label><select id="payment"><option>Transfer Bank</option><option>COD</option><option>E-Wallet</option></select></div>
-  <button class="dark-btn" type="submit">📱 PESAN VIA WHATSAPP</button>
-</form></div></div>
-<div class="toast" id="toast"></div>
+<!-- MODAL KERANJANG -->
+<div class="modal" id="cartModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('cartModal')">×</button>
+    <h2 style="margin-bottom:15px">🛒 Keranjang Belanja</h2>
+    <div id="cartItems"></div>
+    <hr style="margin:15px 0">
+    <div style="display:flex;justify-content:space-between;font-weight:700"><span>Total:</span><span id="cartTotal">Rp0</span></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:15px" onclick="checkoutWA()">Checkout via WhatsApp</button>
+  </div>
+</div>
 
 <script>
-/* =========================================================
-   KONFIGURASI
-   1) Ganti SUPABASE_URL dan SUPABASE_ANON_KEY setelah membuat
-      project Supabase.
-   2) Buat bucket Storage bernama: review-media
-   3) Jalankan SQL yang disediakan bersama file ini.
-   ========================================================= */
-const SUPABASE_URL = "GANTI_DENGAN_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "GANTI_DENGAN_SUPABASE_ANON_KEY";
-const STORE_WA = "6287742688806";
+// Konfigurasi Supabase
+const SUPABASE_URL = "GANTI_SUPABASE_URL_KAMU";
+const SUPABASE_ANON_KEY = "GANTI_SUPABASE_KEY_KAMU";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const supabaseReady = !SUPABASE_URL.startsWith("GANTI_") && !SUPABASE_ANON_KEY.startsWith("GANTI_");
-const sb = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-const PLACEHOLDER = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000">
-<rect width="100%" height="100%" fill="#f1ece8"/>
-<text x="50%" y="48%" text-anchor="middle" font-family="Arial" font-size="38" font-weight="bold" fill="#555">LUNAVERA</text>
-<text x="50%" y="54%" text-anchor="middle" font-family="Arial" font-size="20" fill="#888">Fashion Collection</text>
-</svg>`);
-
-const products = [
-  {id:1,name:"Luna Dress",category:"Dress",price:249000,stock:12,sizes:["S","M","L","XL"],image:PLACEHOLDER,description:"Dress feminin dengan desain modern yang nyaman untuk berbagai aktivitas."},
-  {id:2,name:"Vera Blouse",category:"Top",price:179000,stock:20,sizes:["S","M","L"],image:PLACEHOLDER,description:"Blouse minimalis yang mudah dipadukan untuk gaya casual maupun office."},
-  {id:3,name:"Luna Outer",category:"Outer",price:219000,stock:8,sizes:["M","L","XL"],image:PLACEHOLDER,description:"Outer stylish berpotongan modern yang mudah dipadukan."},
-  {id:4,name:"Vera Skirt",category:"Bottom",price:189000,stock:15,sizes:["S","M","L"],image:PLACEHOLDER,description:"Rok modern dengan desain clean dan nyaman digunakan."},
-  {id:5,name:"Luna Knit Top",category:"Top",price:159000,stock:25,sizes:["S","M","L"],image:PLACEHOLDER,description:"Atasan rajut dengan sentuhan minimalis."},
-  {id:6,name:"Vera Long Dress",category:"Dress",price:299000,stock:7,sizes:["S","M","L","XL"],image:PLACEHOLDER,description:"Gaun panjang elegan untuk momen spesial."},
-  {id:7,name:"Luna Cardigan",category:"Outer",price:199000,stock:14,sizes:["S","M","L"],image:PLACEHOLDER,description:"Cardigan lembut untuk melengkapi outfit harian."},
-  {id:8,name:"Vera Pants",category:"Bottom",price:229000,stock:10,sizes:["S","M","L","XL"],image:PLACEHOLDER,description:"Celana panjang berpotongan rapi dan nyaman."}
-];
-
-let cart = JSON.parse(localStorage.getItem("lunaveraCart")) || [];
-let selectedCategory = "Semua";
-let selectedProduct = null;
-let selectedSize = null;
+let currentUser = null;
+let currentProfile = null;
+let activeProductId = null;
+let cart = JSON.parse(localStorage.getItem("lunaCart")) || [];
 
 const rupiah = n => new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n);
-function toast(msg){const e=document.getElementById("toast");e.textContent=msg;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),3000)}
-function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}
+
 function openModal(id){document.getElementById(id).classList.add("show")}
 function closeModal(id){document.getElementById(id).classList.remove("show")}
-function openWhatsApp(){window.open(`https://wa.me/${STORE_WA}`,"_blank")}
 
-function renderProducts(){
-  const search=(document.getElementById("search").value||"").toLowerCase();
-  const sort=document.getElementById("sort").value;
-  let list=products.filter(p=>(selectedCategory==="Semua"||p.category===selectedCategory)&&p.name.toLowerCase().includes(search));
-  if(sort==="low")list.sort((a,b)=>a.price-b.price);
-  if(sort==="high")list.sort((a,b)=>b.price-a.price);
-  if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
-  document.getElementById("productsGrid").innerHTML=list.length?list.map(p=>`
-    <article class="card"><img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy">
-    <div class="card-body"><span class="cat">${p.category}</span><h3>${p.name}</h3><div class="price">${rupiah(p.price)}</div><div class="stock">Stok: ${p.stock}</div>
-    <div class="actions"><button class="detail" onclick="showProduct(${p.id})">Detail</button><button class="add" onclick="quickAdd(${p.id})">+ Keranjang</button></div></div></article>`).join("")
-    :`<div class="empty">Produk tidak ditemukan.</div>`;
-}
-function setCategory(c,b){selectedCategory=c;document.querySelectorAll(".category").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderProducts()}
-function showProduct(id){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  selectedProduct=p;selectedSize=p.sizes[0];
-  document.getElementById("productDetail").innerHTML=`<div class="detail-grid"><img src="${p.image}" alt="${p.name}"><div><span class="cat">${p.category}</span><h2 style="margin:7px 0">${p.name}</h2><div class="price">${rupiah(p.price)}</div><p style="color:#666;margin:14px 0;line-height:1.7">${p.description}</p><b>Pilih Ukuran</b><div class="sizes">${p.sizes.map((s,i)=>`<button class="size ${i===0?"selected":""}" onclick="chooseSize('${s}',this)">${s}</button>`).join("")}</div><button class="dark-btn" style="width:100%" onclick="addToCart(${p.id},1,selectedSize)">TAMBAH KE KERANJANG</button></div></div>`;
-  openModal("productModal");
-}
-function chooseSize(s,b){selectedSize=s;document.querySelectorAll(".size").forEach(x=>x.classList.remove("selected"));b.classList.add("selected")}
-function quickAdd(id){const p=products.find(x=>x.id===id);addToCart(id,1,p.sizes[0])}
-function addToCart(id,qty=1,size=null){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  const chosen=size||selectedSize||p.sizes[0];
-  const old=cart.find(x=>x.id===id&&x.size===chosen);
-  if(old){if(old.qty+qty>p.stock)return toast("Jumlah melebihi stok.");old.qty+=qty}
-  else cart.push({id,size:chosen,qty});
-  saveCart();updateCartCount();toast("Produk masuk keranjang 🛒");closeModal("productModal");
-}
-function saveCart(){localStorage.setItem("lunaveraCart",JSON.stringify(cart))}
-function updateCartCount(){document.getElementById("cartCount").textContent=cart.reduce((a,x)=>a+x.qty,0)}
-function openCart(){renderCart();openModal("cartModal")}
-function renderCart(){
-  const box=document.getElementById("cartItems");let total=0;
-  if(!cart.length){box.innerHTML=`<div class="empty">🛒<br>Keranjang masih kosong.</div>`;document.getElementById("cartTotal").textContent=rupiah(0);return}
-  box.innerHTML=cart.map((item,i)=>{const p=products.find(x=>x.id===item.id);const sub=p.price*item.qty;total+=sub;return`
-    <div class="cart-item"><img src="${p.image}"><div class="cart-info"><b>${p.name}</b><div>${rupiah(p.price)}</div><small>Ukuran: ${item.size}</small><div class="qty"><button onclick="changeQty(${i},-1)">−</button><span>${item.qty}</span><button onclick="changeQty(${i},1)">+</button></div></div><button class="remove" onclick="removeCart(${i})">Hapus</button></div>`}).join("");
-  document.getElementById("cartTotal").textContent=rupiah(total);
-}
-function changeQty(i,d){const item=cart[i];const p=products.find(x=>x.id===item.id);item.qty+=d;if(item.qty<=0)cart.splice(i,1);else if(item.qty>p.stock)item.qty=p.stock;saveCart();updateCartCount();renderCart()}
-function removeCart(i){cart.splice(i,1);saveCart();updateCartCount();renderCart()}
-function openCheckout(){if(!cart.length)return toast("Keranjang masih kosong.");closeModal("cartModal");openModal("checkoutModal")}
-function sendOrder(e){
-  e.preventDefault();let msg=`Halo LUNAVERA! Saya mau pesan:%0A%0A`;
-  msg+=`Nama: ${document.getElementById("customerName").value}%0AWhatsApp: ${document.getElementById("customerPhone").value}%0AAlamat: ${document.getElementById("customerAddress").value}%0APembayaran: ${document.getElementById("payment").value}%0A%0A`;
-  let total=0;cart.forEach((x,i)=>{const p=products.find(y=>y.id===x.id);total+=p.price*x.qty;msg+=`${i+1}. ${p.name} (${x.size}) x${x.qty} = ${rupiah(p.price*x.qty)}%0A`});msg+=`%0ATOTAL: ${rupiah(total)}`;
-  window.open(`https://wa.me/${STORE_WA}?text=${msg}`,"_blank");
-}
-
-async function uploadReviewMedia(files){
-  if(!sb)return [];
-  const urls=[];
-  for(const file of files.slice(0,3)){
-    const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
-    const path=`${Date.now()}-${crypto.randomUUID()}-${safe}`;
-    const {error}=await sb.storage.from("review-media").upload(path,file,{upsert:false});
-    if(error)throw error;
-    const {data}=sb.storage.from("review-media").getPublicUrl(path);
-    urls.push({url:data.publicUrl,type:file.type.startsWith("video/")?"video":"image"});
+async function init(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(session){
+    currentUser = session.user;
+    const {data} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    currentProfile = data;
+    document.getElementById("userStatus").textContent = `👋 ${data?.username || 'Pengguna'}`;
+    document.getElementById("authBtn").textContent = "Keluar";
+    document.getElementById("authBtn").onclick = logout;
   }
-  return urls;
+  loadProducts();
+  loadUsers();
+  updateCartUI();
 }
+
+function checkAuthAndRun(fn){
+  if(!currentUser){ alert("Silakan masuk/daftar akun terlebih dahulu!"); openModal('authModal'); }
+  else { fn(); }
+}
+
+async function handleAuth(e){
+  e.preventDefault();
+  const email = document.getElementById("authEmail").value;
+  const password = document.getElementById("authPassword").value;
+  const username = document.getElementById("authUsername").value.trim();
+
+  // Coba Login
+  let {data, error} = await sb.auth.signInWithPassword({email, password});
+  if(error){
+    // Jika gagal login, otomatis coba Register
+    const reg = await sb.auth.signUp({email, password});
+    if(reg.error) return alert("Gagal Auth: " + reg.error.message);
+    if(reg.data.user){
+      await sb.from('profiles').insert({ id: reg.data.user.id, username: username || email.split('@')[0] });
+      alert("Akun berhasil dibuat! Silakan login ulang.");
+    }
+  } else {
+    location.reload();
+  }
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  location.reload();
+}
+
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tabShop').style.display = t === 'shop' ? 'block' : 'none';
+  document.getElementById('tabFriends').style.display = t === 'friends' ? 'block' : 'none';
+  event.target.classList.add('active');
+}
+
+// PRODUK
+async function loadProducts(){
+  const {data, error} = await sb.from('products').select('*, profiles(username)').order('created_at',{ascending:false});
+  const box = document.getElementById("productsGrid");
+  if(error || !data || !data.length){ box.innerHTML = '<p>Belum ada produk dari komunitas.</p>'; return; }
+
+  box.innerHTML = data.map(p => `
+    <div class="card">
+      <img src="${p.image}" onerror="this.src='https://via.placeholder.com/300'">
+      <div class="card-body">
+        <span class="seller-tag">👤 ${p.profiles?.username || 'Anonim'}</span>
+        <h3>${p.name}</h3>
+        <div class="price">${rupiah(p.price)}</div>
+        <div class="actions">
+          <button class="btn-outline" onclick="openDetail(${p.id})">Lihat & Ulas</button>
+          <button class="btn-primary" onclick="addToCart(${p.id},'${p.name}',${p.price})">+ Beli</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function saveProduct(e){
+  e.preventDefault();
+  const name = document.getElementById("pName").value;
+  const category = document.getElementById("pCategory").value;
+  const price = document.getElementById("pPrice").value;
+  const stock = document.getElementById("pStock").value;
+  const image = document.getElementById("pImage").value;
+  const description = document.getElementById("pDesc").value;
+
+  const {error} = await sb.from('products').insert({
+    seller_id: currentUser.id, name, category, price, stock, image, description
+  });
+
+  if(error) alert("Gagal menyimpan produk!");
+  else { alert("Produk kamu berhasil dijual ke pasar!"); closeModal('addProductModal'); loadProducts(); }
+}
+
+async function openDetail(id){
+  activeProductId = id;
+  const {data} = await sb.from('products').select('*, profiles(username)').eq('id', id).single();
+  document.getElementById("detailContent").innerHTML = `
+    <h2>${data.name}</h2>
+    <p style="color:#ee4d2d;font-weight:bold;font-size:18px">${rupiah(data.price)}</p>
+    <p><small>Penjual: <b>${data.profiles?.username}</b></small></p>
+    <p style="margin-top:10px">${data.description}</p>
+  `;
+  loadReviews(id);
+  openModal('detailModal');
+}
+
+// ULASAN PUBLIK
+async function loadReviews(pid){
+  const {data} = await sb.from('reviews').select('*').eq('product_id', pid).order('created_at',{ascending:false});
+  const box = document.getElementById("reviewsList");
+  if(!data || !data.length){ box.innerHTML = '<p><small>Belum ada ulasan untuk produk ini.</small></p>'; return; }
+  box.innerHTML = data.map(r => `
+    <div class="review-item">
+      <b>${r.author_name}</b> <span class="stars">${'★'.repeat(r.rating)}</span>
+      <p>${r.comment}</p>
+    </div>
+  `).join('');
+}
+
 async function submitReview(e){
   e.preventDefault();
-  if(!sb){toast("Hubungkan Supabase dulu agar review tersimpan online.");return}
-  const btn=document.getElementById("reviewSubmit");btn.disabled=true;btn.textContent="MENGIRIM...";
-  try{
-    const name=document.getElementById("reviewName").value.trim();
-    const comment=document.getElementById("reviewComment").value.trim();
-    const rating=Number(document.querySelector('input[name="rating"]:checked')?.value);
-    const files=[...document.getElementById("reviewFiles").files];
-    const media=await uploadReviewMedia(files);
-    const {error}=await sb.from("reviews").insert({name,rating,comment,media});
-    if(error)throw error;
-    e.target.reset();toast("Review berhasil dikirim ✨");await loadReviews();
-  }catch(err){console.error(err);toast("Review gagal dikirim. Cek konfigurasi Supabase.")}
-  finally{btn.disabled=false;btn.textContent="KIRIM REVIEW"}
+  checkAuthAndRun(async () => {
+    const rating = document.getElementById("rRating").value;
+    const comment = document.getElementById("rComment").value;
+    await sb.from('reviews').insert({
+      product_id: activeProductId,
+      user_id: currentUser.id,
+      author_name: currentProfile?.username || 'Pengguna',
+      rating, comment
+    });
+    document.getElementById("rComment").value = '';
+    loadReviews(activeProductId);
+  });
 }
-async function loadReviews(){
-  const box=document.getElementById("reviewsList");
-  if(!sb){box.innerHTML=`<div class="empty">Review online belum aktif. Isi konfigurasi Supabase terlebih dahulu.</div>`;return}
-  const {data,error}=await sb.from("reviews").select("*").order("created_at",{ascending:false});
-  if(error){box.innerHTML=`<div class="empty">Review belum dapat dimuat.</div>`;return}
-  if(!data.length){box.innerHTML=`<div class="empty">⭐ Belum ada ulasan pelanggan.</div>`;return}
-  box.innerHTML=data.map(r=>{
-    const media=Array.isArray(r.media)?r.media:[];
-    return `<article class="review"><div class="stars">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</div><p style="margin:8px 0;color:#555">"${escapeHtml(r.comment)}"</p><b>${escapeHtml(r.name)}</b><small style="display:block;color:#999;margin-top:4px">${new Date(r.created_at).toLocaleDateString("id-ID")}</small>${media.length?`<div class="review-media">${media.map(m=>m.type==="video"?`<video controls src="${m.url}"></video>`:`<img src="${m.url}" alt="Foto review" loading="lazy">`).join("")}</div>`:""}</article>`;
-  }).join("");
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 
-document.addEventListener("DOMContentLoaded",()=>{
-  renderProducts();updateCartCount();loadReviews();
-  if(sb) sb.channel("reviews-live").on("postgres_changes",{event:"*",schema:"public",table:"reviews"},loadReviews).subscribe();
-});
+// TEMAN & KOMUNITAS
+async function loadUsers(){
+  const {data} = await sb.from('profiles').select('*');
+  const box = document.getElementById("usersList");
+  if(!data) return;
+  box.innerHTML = data.filter(u => u.id !== currentUser?.id).map(u => `
+    <div class="user-card">
+      <div><b>${u.username || 'Member'}</b></div>
+      <button class="btn btn-outline" onclick="addFriend('${u.id}')">+ Berteman</button>
+    </div>
+  `).join('');
+}
+
+async function addFriend(fid){
+  checkAuthAndRun(async () => {
+    await sb.from('friendships').insert({ user_id: currentUser.id, friend_id: fid });
+    alert("Berhasil berteman!");
+  });
+}
+
+// KERANJANG
+function addToCart(id, name, price){
+  cart.push({id, name, price});
+  localStorage.setItem("lunaCart", JSON.stringify(cart));
+  updateCartUI();
+  alert("Produk masuk keranjang!");
+}
+
+function updateCartUI(){
+  document.getElementById("cartCount").textContent = cart.length;
+}
+
+function openCart(){
+  const box = document.getElementById("cartItems");
+  let total = 0;
+  box.innerHTML = cart.map((item, i) => {
+    total += item.price;
+    return `<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>${item.name}</span><b>${rupiah(item.price)}</b></div>`;
+  }).join('');
+  document.getElementById("cartTotal").textContent = rupiah(total);
+  openModal('cartModal');
+}
+
+function checkoutWA(){
+  let text = "Halo! Saya mau pesan barang dari pasar LUNAVERA:\n";
+  cart.forEach((c,i) => text += `${i+1}. ${c.name} - ${rupiah(c.price)}\n`);
+  window.open(`https://wa.me/6287742688806?text=${encodeURIComponent(text)}`);
+}
+
+document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
 </html>
