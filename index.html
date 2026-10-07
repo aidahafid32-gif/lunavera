@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUNAVERA — Fashion Store</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #faf8f6;
+  color: #292522;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ================= HEADER ================= */
+
+.lv-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #eee;
+  backdrop-filter: blur(10px);
+}
+
+.lv-nav {
+  max-width: 1200px;
+  margin: auto;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  gap: 15px;
+}
+
+.lv-logo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #241f1c;
+  cursor: pointer;
+}
+
+.lv-menu {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+}
+
+.lv-menu button {
+  border: 0;
+  background: none;
+  color: #4d4742;
+  font-weight: 600;
+  transition: color 0.2s;
+  padding: 5px;
+}
+
+.lv-menu button:hover {
+  color: #a67c52;
+}
+
+.lv-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lv-cart-btn {
+  border: 0;
+  background: #292522;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.lv-cart-btn:hover {
+  background: #443e39;
+}
+
+.lv-mobile-toggle {
+  display: none;
+  border: 1px solid #ddd;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+/* Mobile Nav Drawer */
+.lv-mobile-menu {
+  display: none;
+  background: white;
+  border-bottom: 1px solid #eee;
+  padding: 15px 20px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lv-mobile-menu.show {
+  display: flex;
+}
+
+.lv-mobile-menu button {
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 0;
+  color: #333;
+}
+
+/* ================= HERO ================= */
+
+.lv-hero {
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #201a17, #6b5649);
+}
+
+.lv-hero-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  padding: 70px 25px;
+  color: white;
+}
+
+.lv-hero h1 {
+  font-size: clamp(36px, 7vw, 72px);
+  letter-spacing: 5px;
+  margin-bottom: 15px;
+}
+
+.lv-hero p {
+  max-width: 520px;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: #e2dad5;
+}
+
+.lv-btn {
+  border: 0;
+  border-radius: 30px;
+  padding: 13px 25px;
+  font-weight: bold;
+  transition: .2s;
+  display: inline-block;
+  text-align: center;
+}
+
+.lv-btn:hover {
+  transform: translateY(-2px);
+}
+
+.lv-btn-dark {
+  background: #292522;
+  color: white;
+}
+
+.lv-btn-light {
+  background: white;
+  color: #292522;
+}
+
+/* ================= SECTION ================= */
+
+.lv-section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 65px 20px;
+}
+
+.lv-title {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.lv-title h2 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.lv-title p {
+  color: #777;
+}
+
+/* ================= CATEGORY ================= */
+
+.lv-categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.lv-category {
+  border: 1px solid #ddd;
+  background: white;
+  padding: 10px 18px;
+  border-radius: 25px;
+  transition: all 0.2s;
+}
+
+.lv-category.active,
+.lv-category:hover {
+  background: #292522;
+  color: white;
+  border-color: #292522;
+}
+
+/* ================= SEARCH & TOOLS ================= */
+
+.lv-tools {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.lv-search {
+  flex: 1;
+  min-width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 13px 16px;
+  background: white;
+}
+
+.lv-sort {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 13px;
+  background: white;
+}
+
+/* ================= PRODUCTS ================= */
+
+.lv-products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.lv-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  transition: .25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.lv-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+.lv-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  background: #eee;
+}
+
+.lv-card-body {
+  padding: 17px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.lv-card-category {
+  font-size: 12px;
+  color: #a67c52;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.lv-card h3 {
+  margin: 6px 0;
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.lv-price {
+  font-weight: bold;
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.lv-stock {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 14px;
+}
+
+.lv-card-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: auto;
+}
+
+.lv-card-actions button {
+  flex: 1;
+  border: 0;
+  padding: 10px;
+  border-radius: 9px;
+  font-weight: bold;
+  font-size: 13px;
+  transition: opacity 0.2s;
+}
+
+.lv-card-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lv-detail {
+  background: #eee;
+  color: #333;
+}
+
+.lv-add {
+  background: #292522;
+  color: white;
+}
+
+/* ================= MODAL ================= */
+
+.lv-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,.6);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lv-modal.show {
+  display: flex;
+}
+
+.lv-modal-box {
+  width: min(900px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 18px;
+  position: relative;
+  padding: 30px 25px 25px;
+}
+
+.lv-close {
+  position: absolute;
+  right: 18px;
+  top: 15px;
+  border: 0;
+  background: #eee;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.lv-product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.lv-product-detail img {
+  width: 100%;
+  border-radius: 12px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.lv-product-detail h2 {
+  font-size: 26px;
+  margin: 10px 0;
+}
+
+.lv-description {
+  color: #666;
+  line-height: 1.7;
+  margin: 15px 0 20px;
+  font-size: 14px;
+}
+
+.lv-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 20px;
+}
+
+.lv-size {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.lv-size.selected {
+  background: #292522;
+  color: white;
+  border-color: #292522;
+}
+
+/* ================= CART ================= */
+
+.lv-cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.lv-cart-item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.lv-cart-item img {
+  width: 70px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.lv-cart-info {
+  flex: 1;
+}
+
+.lv-qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 7px;
+}
+
+.lv-qty button {
+  border: 1px solid #ddd;
+  background: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.lv-remove {
+  border: 0;
+  background: #fee;
+  color: #b33;
+  padding: 7px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.lv-total {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #222;
+  padding-top: 18px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ================= FORM ================= */
+
+.lv-form {
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.lv-form label {
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.lv-form input,
+.lv-form textarea,
+.lv-form select {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: white;
+}
+
+.lv-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ================= REVIEW FORM & LIST ================= */
+
+.lv-review-form {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  padding: 25px;
+  max-width: 700px;
+  margin: 0 auto 35px;
+}
+
+.lv-review-form h3 {
+  margin-bottom: 7px;
+}
+
+.lv-review-form-info {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.lv-rating-select {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+  margin: 8px 0 10px;
+}
+
+.lv-rating-select input {
+  display: none;
+}
+
+.lv-rating-select label {
+  font-size: 32px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.lv-rating-select label:hover,
+.lv-rating-select label:hover ~ label,
+.lv-rating-select input:checked ~ label {
+  color: #e0a800;
+}
+
+.lv-review-submit {
+  width: 100%;
+}
+
+.lv-reviews {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.lv-review {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.lv-stars {
+  color: #e0a800;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.lv-review p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.lv-review strong {
+  display: block;
+  font-size: 15px;
+}
+
+.lv-review-date {
+  display: block;
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.lv-no-review {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  padding: 40px 20px;
+  color: #777;
+}
+
+.lv-no-review-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+/* ================= FOOTER ================= */
+
+.lv-footer {
+  background: #292522;
+  color: white;
+  text-align: center;
+  padding: 45px 20px;
+}
+
+.lv-footer h2 {
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.lv-footer p {
+  color: #ccc;
+  margin: 6px;
+  font-size: 14px;
+}
+
+/* ================= TOAST ================= */
+
+.lv-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 5000;
+  background: #292522;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(10px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.lv-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width: 900px) {
+  .lv-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lv-product-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .lv-reviews {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width: 600px) {
+  .lv-menu {
+    display: none;
+  }
+
+  .lv-mobile-toggle {
+    display: block;
+  }
+
+  .lv-nav {
+    min-height: 62px;
+  }
+
+  .lv-logo {
+    font-size: 20px;
+  }
+
+  .lv-hero {
+    min-height: 380px;
+  }
+
+  .lv-hero h1 {
+    font-size: 38px;
+  }
+
+  .lv-products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .lv-card-body {
+    padding: 12px;
+  }
+
+  .lv-card h3 {
+    font-size: 14px;
+  }
+
+  .lv-card-actions {
+    flex-direction: column;
+  }
+
+  .lv-section {
+    padding: 45px 15px;
+  }
+
+  .lv-rating-select label {
+    font-size: 27px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="lv-header">
+  <nav class="lv-nav">
+    <div class="lv-logo" onclick="scrollToSection('home')">
+      LUNAVERA
+    </div>
+
+    <ul class="lv-menu">
+      <li><button onclick="scrollToSection('home')">Home</button></li>
+      <li><button onclick="scrollToSection('products')">Shop</button></li>
+      <li><button onclick="scrollToSection('reviews')">Reviews</button></li>
+      <li><button onclick="scrollToSection('contact')">Contact</button></li>
+    </ul>
+
+    <div class="lv-nav-right">
+      <button class="lv-cart-btn" onclick="openCart()">
+        🛒 Keranjang (<span id="cartCount">0</span>)
+      </button>
+
+      <button class="lv-mobile-toggle" onclick="toggleMobileMenu()">
+        ☰
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="lv-mobile-menu" id="mobileMenu">
+    <button onclick="scrollToSection('home'); toggleMobileMenu();">Home</button>
+    <button onclick="scrollToSection('products'); toggleMobileMenu();">Shop</button>
+    <button onclick="scrollToSection('reviews'); toggleMobileMenu();">Reviews</button>
+    <button onclick="scrollToSection('contact'); toggleMobileMenu();">Contact</button>
+  </div>
+</header>
+
+
+<!-- ================= HERO ================= -->
+<section class="lv-hero" id="home">
+  <div class="lv-hero-content">
+    <h1>LUNAVERA</h1>
+    <p>
+      Discover your style with modern fashion,
+      carefully selected for your everyday look.
+    </p>
+    <button class="lv-btn lv-btn-light" onclick="scrollToSection('products')">
+      BELANJA SEKARANG
+    </button>
+  </div>
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+<section class="lv-section" id="products">
+  <div class="lv-title">
+    <h2>Our Collection</h2>
+    <p>Temukan fashion favoritmu di LUNAVERA.</p>
+  </div>
+
+  <div class="lv-categories">
+    <button class="lv-category active" onclick="setCategory('Semua', this)">Semua</button>
+    <button class="lv-category" onclick="setCategory('Dress', this)">Dress</button>
+    <button class="lv-category" onclick="setCategory('Top', this)">Top</button>
+    <button class="lv-category" onclick="setCategory('Outer', this)">Outer</button>
+    <button class="lv-category" onclick="setCategory('Bottom', this)">Bottom</button>
+  </div>
+
+  <div class="lv-tools">
+    <input class="lv-search" id="searchInput" type="text" placeholder="🔎 Cari produk..." oninput="renderProducts()">
+    <select class="lv-sort" id="sortSelect" onchange="renderProducts()">
+      <option value="default">Urutkan</option>
+      <option value="low">Harga Terendah</option>
+      <option value="high">Harga Tertinggi</option>
+      <option value="name">Nama A-Z</option>
+    </select>
+  </div>
+
+  <div class="lv-products" id="productsGrid"></div>
+</section>
+
+
+<!-- ================= REVIEWS ================= -->
+<section class="lv-section" id="reviews">
+  <div class="lv-title">
+    <h2>Customer Reviews</h2>
+    <p>Ulasan dari pelanggan LUNAVERA.</p>
+  </div>
+
+  <!-- FORM REVIEW -->
+  <div class="lv-review-form">
+    <h3>⭐ Tulis Review</h3>
+    <p class="lv-review-form-info">
+      Sudah membeli produk LUNAVERA? Bagikan pengalamanmu melalui rating dan komentar.
+    </p>
+
+    <form class="lv-form" onsubmit="submitReview(event)">
+      <div>
+        <label for="reviewName">Nama</label>
+        <input id="reviewName" required maxlength="50" placeholder="Masukkan nama kamu">
+      </div>
+
+      <div>
+        <label>Rating</label>
+        <div class="lv-rating-select">
+          <input type="radio" name="rating" id="star5" value="5" required>
+          <label for="star5">★</label>
+
+          <input type="radio" name="rating" id="star4" value="4">
+          <label for="star4">★</label>
+
+          <input type="radio" name="rating" id="star3" value="3">
+          <label for="star3">★</label>
+
+          <input type="radio" name="rating" id="star2" value="2">
+          <label for="star2">★</label>
+
+          <input type="radio" name="rating" id="star1" value="1">
+          <label for="star1">★</label>
+        </div>
+      </div>
+
+      <div>
+        <label for="reviewComment">Komentar</label>
+        <textarea id="reviewComment" required maxlength="500" placeholder="Bagaimana pengalaman kamu dengan produk LUNAVERA?"></textarea>
+      </div>
+
+      <button type="submit" class="lv-btn lv-btn-dark lv-review-submit">
+        KIRIM REVIEW
+      </button>
+    </form>
+  </div>
+
+  <!-- DAFTAR REVIEW -->
+  <div class="lv-reviews" id="reviewsList"></div>
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+<section class="lv-section" id="contact">
+  <div class="lv-title">
+    <h2>Contact LUNAVERA</h2>
+    <p>Hubungi kami untuk pertanyaan mengenai produk dan pesanan.</p>
+  </div>
+
+  <div style="text-align:center">
+    <p style="margin-bottom:18px">📱 WhatsApp Store LUNAVERA</p>
+    <button class="lv-btn lv-btn-dark" onclick="openWhatsApp()">
+      CHAT WHATSAPP
+    </button>
+  </div>
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer class="lv-footer">
+  <h2>LUNAVERA</h2>
+  <p>Modern Fashion • Timeless Style</p>
+  <p>© 2026 LUNAVERA. All Rights Reserved.</p>
+</footer>
+
+
+<!-- ================= PRODUCT MODAL ================= -->
+<div class="lv-modal" id="productModal">
+  <div class="lv-modal-box">
+    <button class="lv-close" onclick="closeModal('productModal')">×</button>
+    <div id="productDetail"></div>
+  </div>
+</div>
+
+
+<!-- ================= CART MODAL ================= -->
+<div class="lv-modal" id="cartModal">
+  <div class="lv-modal-box">
+    <button class="lv-close" onclick="closeModal('cartModal')">×</button>
+    <h2>🛒 Keranjang Belanja</h2>
+    <div class="lv-cart-items" id="cartItems"></div>
+    <div class="lv-total">
+      <span>Total</span>
+      <span id="cartTotal">Rp0</span>
+    </div>
+    <button class="lv-btn lv-btn-dark" style="width:100%;margin-top:20px" onclick="openCheckout()">
+      LANJUT CHECKOUT
+    </button>
+  </div>
+</div>
+
+
+<!-- ================= CHECKOUT MODAL ================= -->
+<div class="lv-modal" id="checkoutModal">
+  <div class="lv-modal-box">
+    <button class="lv-close" onclick="closeModal('checkoutModal')">×</button>
+    <h2>Checkout</h2>
+    <p style="color:#777;margin-top:5px;font-size:14px">Isi data berikut sebelum mengirim pesanan.</p>
+
+    <form class="lv-form" onsubmit="sendOrder(event)">
+      <div>
+        <label for="customerName">Nama Lengkap</label>
+        <input id="customerName" required placeholder="Contoh: Budi Santoso">
+      </div>
+
+      <div>
+        <label for="customerPhone">Nomor WhatsApp</label>
+        <input id="customerPhone" required type="tel" placeholder="Contoh: 08123456789">
+      </div>
+
+      <div>
+        <label for="customerAddress">Alamat Lengkap Pengiriman</label>
+        <textarea id="customerAddress" required placeholder="Jl. Anggrek No. 12, Kel. Menteng, Kota Jakarta..."></textarea>
+      </div>
+
+      <div>
+        <label for="paymentMethod">Metode Pembayaran</label>
+        <select id="paymentMethod">
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
+          <option value="E-Wallet (Dana/OVO/Gopay)">E-Wallet (Dana/OVO/Gopay)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="lv-btn lv-btn-dark" style="width:100%;margin-top:10px">
+        📱 PESAN VIA WHATSAPP
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<!-- ================= TOAST ================= -->
+<div class="lv-toast" id="toast"></div>
+
+
+<!-- ================= JAVASCRIPT LOGIC ================= -->
+<script>
+/* =====================================================
+   1. KONFIGURASI NOMOR WHATSAPP
+   ===================================================== */
+const STORE_WA = "6287742688806"; 
+
+/* =====================================================
+   2. GAMBAR PLACEHOLDER (SVG)
+   ===================================================== */
+const PLACEHOLDER_IMAGE = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#f1ece8"/>
+  <path d="M400 380 L440 450 L360 450 Z" fill="#c4b5a5"/>
+  <circle cx="400" cy="350" r="40" fill="#c4b5a5"/>
+  <text x="400" y="540" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="bold" fill="#555">LUNAVERA</text>
+  <text x="400" y="580" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#888">Fashion Collection</text>
+</svg>`);
+
+/* =====================================================
+   3. DATA PRODUK
+   ===================================================== */
+const products = [
+  {
+    id: 1,
+    name: "Luna Dress",
+    category: "Dress",
+    price: 249000,
+    stock: 12,
+    sizes: ["S", "M", "L", "XL"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Dress feminin dengan desain modern yang anggun dan nyaman untuk berbagai aktivitas formal maupun santai."
+  },
+  {
+    id: 2,
+    name: "Vera Blouse",
+    category: "Top",
+    price: 179000,
+    stock: 20,
+    sizes: ["S", "M", "L"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Blouse minimalis berpola elegan, sangat serbaguna untuk gaya casual sehari-hari hingga office look."
+  },
+  {
+    id: 3,
+    name: "Luna Outer",
+    category: "Outer",
+    price: 219000,
+    stock: 8,
+    sizes: ["M", "L", "XL"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Outer luaran stylish berpotongan modern yang mudah dipadukan dengan inner kesayanganmu."
+  },
+  {
+    id: 4,
+    name: "Vera Skirt",
+    category: "Bottom",
+    price: 189000,
+    stock: 15,
+    sizes: ["S", "M", "L"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Rok modern dengan jatuh kain yang jatuh cantik, menyempurnakan penampilan anggun setiap saat."
+  },
+  {
+    id: 5,
+    name: "Luna Knit Top",
+    category: "Top",
+    price: 159000,
+    stock: 25,
+    sizes: ["S", "M", "L"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Atasan rajut halus yang adem dan breathable dengan sentuhan estetika clean minimalis."
+  },
+  {
+    id: 6,
+    name: "Vera Long Dress",
+    category: "Dress",
+    price: 299000,
+    stock: 7,
+    sizes: ["S", "M", "L", "XL"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Gaun panjang eksklusif dengan siluet elegan yang cocok untuk momen spesial dan acara malam."
+  },
+  {
+    id: 7,
+    name: "Luna Cardigan",
+    category: "Outer",
+    price: 199000,
+    stock: 14,
+    sizes: ["S", "M", "L"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Cardigan hangat nan lembut yang simpel untuk melengkapi outfit harian agar tampil makin modis."
+  },
+  {
+    id: 8,
+    name: "Vera Pants",
+    category: "Bottom",
+    price: 229000,
+    stock: 10,
+    sizes: ["S", "M", "L", "XL"],
+    image: PLACEHOLDER_IMAGE,
+    description: "Celana panjang berpotongan rapi, fleksibel dan memberikan kenyamanan tingkat tinggi sepanjang hari."
+  }
+];
+
+/* =====================================================
+   4. STATE SISTEM
+   ===================================================== */
+let cart = JSON.parse(localStorage.getItem("lunaveraCart")) || [];
+let selectedCategory = "Semua";
+let selectedProduct = null;
+let selectedSize = null;
+
+/* =====================================================
+   5. UTILITY FUNCTIONS
+   ===================================================== */
+function rupiah(number) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
+  }).format(number);
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add("show");
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById("mobileMenu");
+  menu.classList.toggle("show");
+}
+
+function openWhatsApp() {
+  window.open(`https://wa.me/${STORE_WA}`, "_blank");
+}
+
+/* =====================================================
+   6. RENDER PRODUK, SEARCH & FILTER
+   ===================================================== */
+function renderProducts() {
+  const grid = document.getElementById("productsGrid");
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const sort = document.getElementById("sortSelect").value;
+
+  let list = products.filter(product => {
+    const categoryMatch = selectedCategory === "Semua" || product.category === selectedCategory;
+    const searchMatch = product.name.toLowerCase().includes(search);
+    return categoryMatch && searchMatch;
+  });
+
+  if (sort === "low") list.sort((a, b) => a.price - b.price);
+  if (sort === "high") list.sort((a, b) => b.price - a.price);
+  if (sort === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+
+  if (list.length === 0) {
+    grid.innerHTML = `
+      <p style="grid-column:1/-1;text-align:center;padding:40px;color:#777;">
+        Produk tidak ditemukan.
+      </p>
+    `;
+    return;
+  }
+
+  grid.innerHTML = list.map(product => `
+    <article class="lv-card">
+      <img class="lv-image" src="${product.image}" alt="${product.name}" loading="lazy">
+      <div class="lv-card-body">
+        <span class="lv-card-category">${product.category}</span>
+        <h3>${product.name}</h3>
+        <div class="lv-price">${rupiah(product.price)}</div>
+        <div class="lv-stock">Stok: ${product.stock}</div>
+        <div class="lv-card-actions">
+          <button class="lv-detail" onclick="showProduct(${product.id})">Detail</button>
+          <button class="lv-add" onclick="quickAdd(${product.id})" ${product.stock <= 0 ? "disabled" : ""}>
+            + Keranjang
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function setCategory(category, button) {
+  selectedCategory = category;
+  document.querySelectorAll(".lv-category").forEach(btn => btn.classList.remove("active"));
+  button.classList.add("active");
+  renderProducts();
+}
+
+/* =====================================================
+   7. DETAIL PRODUK MODAL
+   ===================================================== */
+function showProduct(id) {
+  const product = products.find(p => p.id === id);
+  if (!product) return;
+
+  selectedProduct = product;
+  selectedSize = product.sizes[0];
+
+  document.getElementById("productDetail").innerHTML = `
+    <div class="lv-product-detail">
+      <div>
+        <img src="${product.image}" alt="${product.name}">
+      </div>
+      <div>
+        <span class="lv-card-category">${product.category}</span>
+        <h2>${product.name}</h2>
+        <div class="lv-price">${rupiah(product.price)}</div>
+        <p class="lv-description">${product.description}</p>
+        
+        <strong style="font-size:14px">Pilih Ukuran:</strong>
+        <div class="lv-sizes">
+          ${product.sizes.map((size, index) => `
+            <button class="lv-size ${index === 0 ? "selected" : ""}" onclick="chooseSize('${size}', this)">
+              ${size}
+            </button>
+          `).join("")}
+        </div>
+
+        <button class="lv-btn lv-btn-dark" style="width:100%" onclick="addToCart(${product.id}, 1)">
+          TAMBAH KE KERANJANG
+        </button>
+      </div>
+    </div>
+  `;
+
+  openModal("productModal");
+}
+
+function chooseSize(size, button) {
+  selectedSize = size;
+  document.querySelectorAll(".lv-size").forEach(btn => btn.classList.remove("selected"));
+  button.classList.add("selected");
+}
+
+/* =====================================================
+   8. MANAJEMEN KERANJANG BELANJA
+   ===================================================== */
+function quickAdd(id) {
+  const product = products.find(p => p.id === id);
+  if (!product) return;
+  addToCart(id, 1, product.sizes[0]);
+}
+
+function addToCart(id, quantity = 1, size = null) {
+  const product = products.find(p => p.id === id);
+  if (!product) return;
+
+  if (product.stock <= 0) {
+    showToast("Maaf, stok produk ini sedang habis.");
+    return;
+  }
+
+  const chosenSize = size || selectedSize || product.sizes[0];
+  const existing = cart.find(item => item.id === id && item.size === chosenSize);
+
+  if (existing) {
+    if (existing.qty + quantity > product.stock) {
+      showToast("Jumlah permintaan melebihi sisa stok.");
+      return;
+    }
+    existing.qty += quantity;
+  } else {
+    cart.push({
+      id: id,
+      size: chosenSize,
+      qty: quantity
+    });
+  }
+
+  saveCart();
+  updateCartCount();
+  showToast("Produk berhasil masuk keranjang 🛒");
+  closeModal("productModal");
+}
+
+function saveCart() {
+  localStorage.setItem("lunaveraCart", JSON.stringify(cart));
+}
+
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  document.getElementById("cartCount").textContent = count;
+}
+
+function openCart() {
+  renderCart();
+  openModal("cartModal");
+}
+
+function renderCart() {
+  const container = document.getElementById("cartItems");
+
+  if (cart.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:35px">
+        <div style="font-size:45px">🛒</div>
+        <p style="color:#777;margin-top:10px">Keranjang belanjaanmu masih kosong.</p>
+      </div>
+    `;
+    document.getElementById("cartTotal").textContent = rupiah(0);
+    return;
+  }
+
+  let total = 0;
+
+  container.innerHTML = cart.map((item, index) => {
+    const product = products.find(p => p.id === item.id);
+    if (!product) return "";
+
+    const subtotal = product.price * item.qty;
+    total += subtotal;
+
+    return `
+      <div class="lv-cart-item">
+        <img src="${product.image}" alt="${product.name}">
+        <div class="lv-cart-info">
+          <strong>${product.name}</strong>
+          <div>${rupiah(product.price)}</div>
+          <small style="color:#666">Ukuran: ${item.size}</small>
+          <div class="lv-qty">
+            <button onclick="changeQty(${index}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${index}, 1)">+</button>
+          </div>
+        </div>
+        <button class="lv-remove" onclick="removeCart(${index})">Hapus</button>
+      </div>
+    `;
+  }).join("");
+
+  document.getElementById("cartTotal").textContent = rupiah(total);
+}
+
+function changeQty(index, change) {
+  const item = cart[index];
+  const product = products.find(p => p.id === item.id);
+  if (!product) return;
+
+  const newQty = item.qty + change;
+
+  if (newQty <= 0) {
+    cart.splice(index, 1);
+  } else if (newQty <= product.stock) {
+    item.qty = newQty;
+  } else {
+    showToast("Jumlah melebihi stok yang tersedia.");
+    return;
+  }
+
+  saveCart();
+  updateCartCount();
+  renderCart();
+}
+
+function removeCart(index) {
+  cart.splice(index, 1);
+  saveCart();
+  updateCartCount();
+  renderCart();
+  showToast("Produk dihapus dari keranjang.");
+}
+
+/* =====================================================
+   9. CHECKOUT & INTEGRASI WHATSAPP
+   ===================================================== */
+function openCheckout() {
+  if (cart.length === 0) {
+    showToast("Keranjang masih kosong.");
+    return;
+  }
+  closeModal("cartModal");
+  openModal("checkoutModal");
+}
+
+function sendOrder(event) {
+  event.preventDefault();
+
+  if (cart.length === 0) {
+    showToast("Keranjang kosong.");
+    return;
+  }
+
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+  const payment = document.getElementById("paymentMethod").value;
+
+  let message = "Halo LUNAVERA! Saya mau pesan produk berikut:\n\n";
+
+  message += "*DATA PEMBELI*\n";
+  message += `• Nama: ${name}\n`;
+  message += `• WhatsApp: ${phone}\n`;
+  message += `• Alamat: ${address}\n`;
+  message += `• Pembayaran: ${payment}\n\n`;
+
+  message += "*DETAIL PESANAN*\n";
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const product = products.find(p => p.id === item.id);
+    if (!product) return;
+
+    const subtotal = product.price * item.qty;
+    total += subtotal;
+
+    message += `${index + 1}. ${product.name} (${item.size}) x${item.qty} = ${rupiah(subtotal)}\n`;
+  });
+
+  message += `\n*TOTAL PEMBAYARAN: ${rupiah(total)}*\n\n`;
+  message += "Mohon diproses pesanan saya. Terima kasih!";
+
+  const encodedMessage = encodeURIComponent(message);
+  const waUrl = `https://wa.me/${STORE_WA}?text=${encodedMessage}`;
+
+  window.open(waUrl, "_blank");
+}
+
+/* =====================================================
+   10. ULASAN & REVIEW PELANGGAN
+   ===================================================== */
+function getReviews() {
+  return JSON.parse(localStorage.getItem("lunaveraReviews")) || [];
+}
+
+function saveReviews(reviews) {
+  localStorage.setItem("lunaveraReviews", JSON.stringify(reviews));
+}
+
+function renderReviews() {
+  const reviews = getReviews();
+  const container = document.getElementById("reviewsList");
+
+  if (reviews.length === 0) {
+    container.innerHTML = `
+      <div class="lv-no-review">
+        <div class="lv-no-review-icon">⭐</div>
+        <strong>Belum ada ulasan pelanggan.</strong>
+        <p style="margin-top:5px;font-size:13px">Jadilah pelanggan pertama yang memberikan review!</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = reviews.map(item => `
+    <div class="lv-review">
+      <div class="lv-stars">${"★".repeat(item.rating)}${"☆".repeat(5 - item.rating)}</div>
+      <p>"${item.comment}"</p>
+      <strong>${item.name}</strong>
+      <span class="lv-review-date">${item.date}</span>
+    </div>
+  `).join("");
+}
+
+function submitReview(event) {
+  event.preventDefault();
+
+  const nameInput = document.getElementById("reviewName");
+  const commentInput = document.getElementById("reviewComment");
+  const ratingInput = document.querySelector('input[name="rating"]:checked');
+
+  if (!ratingInput) {
+    showToast("Silakan pilih rating bintang terlebih dahulu.");
+    return;
+  }
+
+  const newReview = {
+    name: nameInput.value.trim(),
+    rating: parseInt(ratingInput.value),
+    comment: commentInput.value.trim(),
+    date: new Date().toLocaleDateString("id-ID", {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  };
+
+  const reviews = getReviews();
+  reviews.unshift(newReview);
+  saveReviews(reviews);
+
+  renderReviews();
+  showToast("Ulasan berhasil dikirim! Terima kasih ✨");
+
+  // Reset Form
+  nameInput.value = "";
+  commentInput.value = "";
+  ratingInput.checked = false;
+}
+
+/* =====================================================
+   11. INISIALISASI SAAT HALAMAN DIMUAT
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  updateCartCount();
+  renderReviews();
+});
+</script>
+
+</body>
+</html>
